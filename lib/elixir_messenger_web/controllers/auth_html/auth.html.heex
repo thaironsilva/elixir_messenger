@@ -1,0 +1,93 @@
+<div class="flex min-h-screen items-center justify-center bg-zinc-50 px-4 py-12">
+  <div class="w-full max-w-md">
+    <div class="mb-8 text-center">
+      <p class="text-lg font-semibold tracking-tight text-zinc-900">ElixirMessenger</p>
+      <h1 class="mt-3 text-2xl font-semibold tracking-tight text-zinc-900">
+        <%= if @mode == :login, do: "Log in", else: "Sign up" %>
+      </h1>
+      <p class="mt-1 text-sm text-zinc-500">
+        <%= if @mode == :login do %>
+          Welcome back. Enter your name and password.
+        <% else %>
+          Create your account to start chatting.
+        <% end %>
+      </p>
+    </div>
+
+    <div class="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
+      <.flash_group flash={@flash} />
+
+      <form
+        action={if @mode == :login, do: ~p"/login", else: ~p"/signup"}
+        method="post"
+        class="space-y-5"
+      >
+        <input type="hidden" name="_csrf_token" value={get_csrf_token()} />
+
+        <div>
+          <label for="user_name" class="block text-sm font-medium text-zinc-700">
+            Name
+          </label>
+          <input
+            id="user_name"
+            name="user[name]"
+            type="text"
+            value={@name}
+            autocomplete="username"
+            required
+            class="mt-1 block w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none transition placeholder:text-zinc-400 focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
+          />
+        </div>
+
+        <div>
+          <label for="user_password" class="block text-sm font-medium text-zinc-700">
+            Password
+          </label>
+          <input
+            id="user_password"
+            name="user[password]"
+            type="password"
+            autocomplete={if @mode == :login, do: "current-password", else: "new-password"}
+            required
+            class="mt-1 block w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none transition placeholder:text-zinc-400 focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
+          />
+        </div>
+
+        <div :if={@mode == :signup}>
+          <label for="user_password_confirmation" class="block text-sm font-medium text-zinc-700">
+            Confirm password
+          </label>
+          <input
+            id="user_password_confirmation"
+            name="user[password_confirmation]"
+            type="password"
+            autocomplete="new-password"
+            required
+            class="mt-1 block w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none transition placeholder:text-zinc-400 focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
+          />
+        </div>
+
+        <button
+          type="submit"
+          class="flex w-full items-center justify-center rounded-lg bg-zinc-900 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:ring-offset-2"
+        >
+          <%= if @mode == :login, do: "Log in", else: "Create account" %>
+        </button>
+      </form>
+
+      <p class="mt-6 text-center text-sm text-zinc-500">
+        <%= if @mode == :login do %>
+          New here?
+          <.link href={~p"/signup"} class="font-medium text-zinc-900 hover:underline">
+            Create an account
+          </.link>
+        <% else %>
+          Already have an account?
+          <.link href={~p"/login"} class="font-medium text-zinc-900 hover:underline">
+            Log in
+          </.link>
+        <% end %>
+      </p>
+    </div>
+  </div>
+</div>

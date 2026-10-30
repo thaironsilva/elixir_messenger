@@ -25,7 +25,7 @@ defmodule ElixirMessenger.Users.Password do
   @doc """
   Checks a plaintext password against a stored hash.
   """
-  def verify(password, stored) when is_binary(password) and is_binary(stored) do
+  def matches?(password, stored) when is_binary(password) and is_binary(stored) do
     with ["", "pbkdf2-sha256", iterations, salt, digest] <- String.split(stored, "$"),
          {iterations, ""} <- Integer.parse(iterations),
          {:ok, salt} <- Base.decode64(salt),
@@ -37,5 +37,5 @@ defmodule ElixirMessenger.Users.Password do
     end
   end
 
-  def verify(_password, _stored), do: false
+  def matches?(_password, _stored), do: false
 end

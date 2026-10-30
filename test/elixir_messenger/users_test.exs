@@ -21,7 +21,7 @@ defmodule ElixirMessenger.UsersTest do
       assert {:ok, %User{id: id, name: "user", password: stored_password}} = Users.insert(user)
       assert not is_nil(id)
       refute stored_password == "123pass"
-      assert Password.verify("123pass", stored_password)
+      assert Password.matches?("123pass", stored_password)
     end
 
     test "does not insert a user with a duplicated name" do
@@ -37,6 +37,17 @@ defmodule ElixirMessenger.UsersTest do
 
       assert {:ok, %User{name: "user"}} = Users.insert(user1)
       assert {:error, :already_exists} = Users.insert(user2)
+    end
+  end
+
+  describe "User.validate_registration/3" do
+    test "accepts a valid registration and rejects each invalid case" do
+      assert :ok = User.validate_registration("alice", "secret", "secret")
+
+      assert {:error, :name_required} = User.validate_registration("  ", "secret", "secret")
+      assert {:error, :name_required} = User.validate_registration(nil, "secret", "secret")
+      assert {:error, :password_required} = User.validate_registration("alice", "", "")
+      assert {:error, :password_mismatch} = User.validate_registration("alice", "secret", "other")
     end
   end
 
@@ -75,8 +86,8 @@ defmodule ElixirMessenger.UsersTest do
                Users.update(%{user | password: "newpass"})
 
       assert stored_password == user.password
-      assert Password.verify("123pass", stored_password)
-      refute Password.verify("newpass", stored_password)
+      assert Password.matches?("123pass", stored_password)
+      refute Password.matches?("newpass", stored_password)
     end
 
     test "does not rename to an existing name" do
@@ -102,8 +113,8 @@ defmodule ElixirMessenger.UsersTest do
                Users.update_password(user, "newpass")
 
       refute stored_password == user.password
-      assert Password.verify("newpass", stored_password)
-      refute Password.verify("123pass", stored_password)
+      assert Password.matches?("newpass", stored_password)
+      refute Password.matches?("123pass", stored_password)
     end
 
     test "returns not_found for an unknown id" do
