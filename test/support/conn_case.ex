@@ -31,8 +31,7 @@ defmodule ElixirMessengerWeb.ConnCase do
     end
   end
 
-  setup tags do
-    ElixirMessenger.DataCase.setup_sandbox(tags)
+  setup do
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 end

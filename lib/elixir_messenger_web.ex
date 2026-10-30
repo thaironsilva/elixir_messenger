@@ -38,12 +38,13 @@ defmodule ElixirMessengerWeb do
 
   def controller do
     quote do
+      use Gettext, backend: ElixirMessengerWeb.Gettext
+
       use Phoenix.Controller,
         formats: [:html, :json],
         layouts: [html: ElixirMessengerWeb.Layouts]
 
       import Plug.Conn
-      import ElixirMessengerWeb.Gettext
 
       unquote(verified_routes())
     end

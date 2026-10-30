@@ -2,7 +2,9 @@ defmodule ElixirMessengerWeb.ErrorJSONTest do
   use ElixirMessengerWeb.ConnCase, async: true
 
   test "renders 404" do
-    assert ElixirMessengerWeb.ErrorJSON.render("404.json", %{}) == %{errors: %{detail: "Not Found"}}
+    assert ElixirMessengerWeb.ErrorJSON.render("404.json", %{}) == %{
+             errors: %{detail: "Not Found"}
+           }
   end
 
   test "renders 500" do

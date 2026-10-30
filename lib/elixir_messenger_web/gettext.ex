@@ -5,7 +5,7 @@ defmodule ElixirMessengerWeb.Gettext do
   By using [Gettext](https://hexdocs.pm/gettext),
   your module gains a set of macros for translations, for example:
 
-      import ElixirMessengerWeb.Gettext
+      use Gettext, backend: ElixirMessengerWeb.Gettext
 
       # Simple translation
       gettext("Here is the string to translate")
@@ -20,5 +20,5 @@ defmodule ElixirMessengerWeb.Gettext do
 
   See the [Gettext Docs](https://hexdocs.pm/gettext) for detailed usage.
   """
-  use Gettext, otp_app: :elixir_messenger
+  use Gettext.Backend, otp_app: :elixir_messenger
 end
