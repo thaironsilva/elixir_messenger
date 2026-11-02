@@ -1,18 +1,31 @@
-# ElixirMessenger
+# ElixirMessenger (work in progress)
 
-To start your Phoenix server:
+A small messenger app I'm building in Elixir/Phoenix. The goal is to have it deployed
+in production with complete CI/CD.
 
-  * Run `mix setup` to install and setup dependencies
-  * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
+## Progress
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+- [x] Sign up, log in, and log out
+- [x] Hash passwords (PBKDF2-HMAC-SHA256) before storing them
+- [x] Store users in ETS with unique usernames
+- [x] Protect the chat page, which shows a placeholder and a logout button
+- [x] Server-side chat channel that requires a logged-in user
+- [x] Tests covering users, auth, and the socket/channel
+- [ ] Send and receive messages in the UI (the channel isn't connected to the page yet)
+- [ ] Persist data (ETS is in memory, so a restart wipes it)
+- [ ] GitHub Actions CI
+- [ ] Docker image
+- [ ] Terraform for AWS
+- [ ] ALB/NLB, ingress, routing, health checks
+- [ ] Argo CD deployment
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+## Running it locally
 
-## Learn more
+    mix setup
+    mix phx.server
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+Then open http://localhost:4000.
+
+Run the tests with:
+
+    mix test
